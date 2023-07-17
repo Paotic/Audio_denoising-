@@ -8,13 +8,13 @@ import ctypes as ct  # C compatible data types
 
 def read_wav(wavfile):
     f = wavfile
-    params = f.getparams()
+    params = f.getparams() #Gets the parameters of the wav file
 
-    nchannels, sampwidth, framerate, nframes = params[:4]
-    strData = f.readframes(nframes)
-    waveData = np.frombuffer(strData, dtype=np.int16)
+    nchannels, sampwidth, framerate, nframes = params[:4] #Extracts the number of channels, sample width, frame rate and number of frames from the params tuple and assigns them to separate variables
+    strData = f.readframes(nframes) #Reads the wave data from the wave file
+    waveData = np.frombuffer(strData, dtype=np.int16) #Converts the byte string strData
 
-    time = np.arange(0, nframes) * (1.0 / framerate)
+    time = np.arange(0, nframes) * (1.0 / framerate) #Creates an array represents the time axis of the wave data
     plt.plot(time, waveData)
     plt.xlabel("Time")
     plt.ylabel("Amplitude")
@@ -22,20 +22,21 @@ def read_wav(wavfile):
     plt.show()
     return (waveData, time)
 
-
+#defines the bit-level representation of a 32-bit floating-point number
 class FloatBits(ct.Structure):
+# unsigned int
     _fields_ = [
-        ('M', ct.c_uint, 23),  # unsigned int
-        ('E', ct.c_uint, 8),
-        ('S', ct.c_uint, 1)
+        ('M', ct.c_uint, 23), #represent the mantissa
+        ('E', ct.c_uint, 8), #exponent
+        ('S', ct.c_uint, 1) #sign bits
     ]
 
-
+#combines a 32-bit floating-point number and its bit-level representation
 class Float(ct.Union):
     _anonymous_ = ('bits',)
     _fields_ = [
-        ('value', ct.c_float),
-        ('bits', FloatBits)
+        ('value', ct.c_float), #represents the bit-level
+        ('bits', FloatBits) #representation of the value using the FloatBits structure
     ]
 
 

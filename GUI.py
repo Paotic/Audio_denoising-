@@ -1,7 +1,6 @@
 from tkinter import *
 import pygame
 
-
 window = Tk()
 window.title("Audio_denoising")
 window.geometry("1280x1080")
@@ -18,7 +17,7 @@ def freq_denoise():
 def spectral_denoise():
     pygame.mixer.music.load("spectral_sub.wav")
     pygame.mixer.music.play(loops= 0)
-# import the 3 files
+# import the 2 files
 def freq():
     import freq_filter
 
